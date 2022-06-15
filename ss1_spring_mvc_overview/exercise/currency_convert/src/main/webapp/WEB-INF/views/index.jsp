@@ -14,7 +14,7 @@
         </tr>
         <tr>
           <th>Result</th>
-          <td>${convertMoney}</td>
+          <td><input type="text" value="${converted}" readonly></td>
         </tr>
         <tr>
         </tr>
