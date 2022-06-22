@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="/layout :: head">
+</head>
+<body>
+<h3>List Categories</h3>
+<!--<form th:action="@{/category/search}" th:object="${blog}" method="get" novalidate="novalidate">-->
+<!--    <input type="text" th:field="*{nameBlog}">-->
+<!--    <input type="submit" value="Search">-->
+<!--</form>-->
+<p>
+    <a th:href="@{/category/create}">
+        Add new categories
+    </a>
+</p>
+<div class="notify">
+    <div th:if="${success}">
+        <span th:text="${success}"></span>
+    </div>
+</div>
+<table id="products">
+    <thead>
+    <tr>
+        <th>ID</th>
+        <th>Name Category</th>
+        <th>Edit</th>
+        <th>Delete</th>
+        <th>View</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="row, rowStat : ${categories}">
+        <td th:text="${row.idCategory}"></td>
+        <td th:text="${row.nameCategory}"></td>
+        <td><a th:href="@{/category/{id}/edit(id=${row.getIdCategory()})}">Edit</a></td>
+        <td><a th:href="@{/category/{id}/delete(id=${row.getIdCategory()})}">Delete</a></td>
+        <td><a th:href="@{/category/{id}/view(id=${row.getIdCategory()})}">View</a></td>
+    </tr>
+    </tbody>
+</table>
+<footer th:replace="/layout :: footer"></footer>
+</body>
+</html>

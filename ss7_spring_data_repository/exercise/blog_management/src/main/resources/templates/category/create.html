@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="/layout :: head">
+</head>
+<body>
+<div id="form">
+    <form th:action="@{/category/save}" th:object="${category}" method="post" novalidate="novalidate">
+        <input type="hidden" th:field="*{idCategory}">
+        <div>
+            <label>Name Category</label>
+            <input type="text" th:field="*{nameCategory}">
+        </div>
+        <input type="submit" value="Save">
+    </form>
+</div>
+<footer th:replace="/layout :: footer"></footer>
+</body>
+</html>
