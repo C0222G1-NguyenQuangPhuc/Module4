@@ -40,7 +40,7 @@ public class BlogService implements IBlogService {
 
     @Override
     public Page<Blog> findAllBlogByName(Pageable pageable, Blog blog) {
-        return iBlogRepository.findAllBlogByName(pageable, blog.getNameBlog());
+        return iBlogRepository.findAllBlogByName(pageable, "%" + blog.getNameBlog() + "%");
     }
 
 }

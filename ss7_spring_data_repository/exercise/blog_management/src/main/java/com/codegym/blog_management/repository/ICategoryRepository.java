@@ -16,14 +16,14 @@ public interface ICategoryRepository extends JpaRepository<Category, Integer> {
     List<Category> findAllCategory();
 
     @Modifying
-    @Query(value = "insert into category (name_category, status_delete) values (:name, 1);", nativeQuery = true)
+    @Query(value = "insert into category (name_category, status_delete) values (:name, 1)", nativeQuery = true)
     void save(@Param("name") String name);
 
-    @Query(value = "select * from category where id_category = :id;", nativeQuery = true)
+    @Query(value = "select * from category where id_category = :id", nativeQuery = true)
     Category findByIdCategory(@Param("id") Integer id);
 
     @Modifying
-    @Query(value = "update category set name_category = :name where id_category = :id;", nativeQuery = true)
+    @Query(value = "update category set name_category = :name where id_category = :id", nativeQuery = true)
     void update(@Param("name") String name, @Param("id") Integer id);
 
     @Modifying
