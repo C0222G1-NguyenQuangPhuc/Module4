@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="/layout :: head">
+</head>
+<body>
+<div id="form">
+    <form th:action="@{/songs/save}" th:object="${song}" method="post" novalidate="novalidate">
+        <input type="hidden" th:field="*{idSong}">
+        <div>
+            <label>Name Song</label>
+            <input type="text" th:field="*{nameSong}">
+        </div>
+        <p style="color: red" th:if="${#fields.hasErrors('nameSong')}" th:errors="*{nameSong}"></p>
+        <div>
+            <label>Artist</label>
+            <input type="text" th:field="*{artist}">
+        </div>
+        <p style="color: red" th:if="${#fields.hasErrors('artist')}" th:errors="*{artist}"></p>
+        <div>
+            <label>Type</label>
+            <input type="text" th:field="*{type}">
+        </div>
+        <p style="color: red" th:if="${#fields.hasErrors('type')}" th:errors="*{type}"></p>
+        <div>
+            <label>Link</label>
+            <input type="text" th:field="*{Link}">
+        </div>
+        <p style="color: red" th:if="${#fields.hasErrors('link')}" th:errors="*{link}"></p>
+        <input type="submit" value="Save">
+    </form>
+</div>
+<footer th:replace="/layout :: footer"></footer>
+</body>
+</html>
