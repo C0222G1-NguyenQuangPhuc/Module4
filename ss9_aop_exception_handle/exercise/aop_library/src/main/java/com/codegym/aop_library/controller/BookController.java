@@ -36,13 +36,13 @@ public class BookController {
     }
 
     @PostMapping("/confirm")
-    public String update(@Valid @ModelAttribute Book book,RedirectAttributes redirectAttributes, Model model) {
-        if (book.getQuantity() == 0){
+    public String update(@Valid @ModelAttribute Book book, RedirectAttributes redirectAttributes, Model model) {
+        if (book.getQuantity() == 0) {
             redirectAttributes.addFlashAttribute("message", "Không còn sách để thuê");
             return "redirect:/books";
-        }else {
+        } else {
             Integer code = (int) Math.floor((Math.random() * 89999) + 10000);
-            OrderBook orderBook = new OrderBook(code,book);
+            OrderBook orderBook = new OrderBook(code, book);
             iBookService.update(book);
             iOrderBookService.save(orderBook);
             redirectAttributes.addFlashAttribute("message", "Mã thuê sách của bạn là: " + code);
@@ -51,9 +51,9 @@ public class BookController {
     }
 
     @GetMapping("/give")
-    public String returnBook(OrderBook order, RedirectAttributes redirectAttributes){
+    public String returnBook(OrderBook order, RedirectAttributes redirectAttributes) {
         OrderBook orderBook = iOrderBookService.findByOrderBookCode(order.getOrderBookCode());
-        if (orderBook != null){
+        if (orderBook != null) {
             Book book = orderBook.getBook();
             book.setQuantity(book.getQuantity() + 1);
             iBookService.giveBack(book);

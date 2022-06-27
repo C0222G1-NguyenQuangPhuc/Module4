@@ -13,17 +13,17 @@ public class OrderBookService implements IOrderBookService {
     private IOrderBookRepository iOrderBookRepository;
 
     @Override
-    public void save(OrderBook orderBook){
+    public void save(OrderBook orderBook) {
         iOrderBookRepository.save(orderBook);
     }
 
     @Override
-    public OrderBook findByOrderBookCode(Integer code){
+    public OrderBook findByOrderBookCode(Integer code) {
         return iOrderBookRepository.findByOrderBookCode(code);
     }
 
     @Override
-    public void delete(OrderBook orderBook){
+    public void delete(OrderBook orderBook) {
         iOrderBookRepository.delete(orderBook);
     }
 }

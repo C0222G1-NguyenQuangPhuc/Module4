@@ -15,31 +15,31 @@ public class BookService implements IBookService {
     private IBookRepository iBookRepository;
 
     @Override
-    public List<Book> findAll(){
+    public List<Book> findAll() {
         return iBookRepository.findAll();
     }
 
     @Override
-    public Book findById(Integer id){
+    public Book findById(Integer id) {
         return iBookRepository.findById(id).get();
     }
 
     @Override
-    public void update(Book book){
+    public void update(Book book) {
         book.setQuantity(book.getQuantity() - 1);
         iBookRepository.save(book);
     }
 
     @Override
-    public void giveBack(Book book){
+    public void giveBack(Book book) {
         iBookRepository.save(book);
     }
 
     @Override
     public boolean checkQuantity(Integer quantity) {
-        if (quantity == 0){
+        if (quantity == 0) {
             return false;
-        }else {
+        } else {
             return true;
         }
     }

@@ -7,8 +7,8 @@
     <link rel="stylesheet" type="text/css" th:href="@{/bootstrap/bootstrap413/css/style.css}"/>
 </head>
 <body>
-<form th:action="@{/books/give}" th:object="${order}"  method="get" novalidate="novalidate">
-    <input th:type="number" th:field="*{orderBookCode}" >
+<form th:action="@{/books/give}" th:object="${order}" method="get" novalidate="novalidate">
+    <input th:type="number" th:field="*{orderBookCode}">
     <input type="submit" value="Search">
 </form>
 <table id="tableCustomer" class="table table-striped table-bordered col" style="width: 100%">
