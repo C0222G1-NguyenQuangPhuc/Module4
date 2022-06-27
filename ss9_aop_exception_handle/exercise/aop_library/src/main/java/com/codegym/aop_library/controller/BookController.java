@@ -65,4 +65,9 @@ public class BookController {
             return "redirect:/books";
         }
     }
+
+    @ExceptionHandler(Exception.class)
+    public String handleException() {
+        return "error";
+    }
 }
