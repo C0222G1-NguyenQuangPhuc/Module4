@@ -104,7 +104,6 @@
         <td th:text="${row.customerEmail}"></td>
         <td th:text="${row.customerAddress}"></td>
         <td><a th:href="@{/customers/{id}/edit(id=${row.getCustomerId()})}">Edit</a></td>
-        <td><a th:href="@{/customers/{id}/delete(id=${row.getCustomerId()})}">Delete</a></td>
         <td>
             <input id="del" th:attr="onclick=|showInfo('${row.customerId}','${row.customerName}')|"
                    data-toggle="modal" data-target="#modal1" type="button"
