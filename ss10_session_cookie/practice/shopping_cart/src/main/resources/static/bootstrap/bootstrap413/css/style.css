@@ -1,0 +1,20 @@
+#cards {
+    box-sizing: border-box;
+    display: block;
+    margin: 15px;
+}
+
+#cards-view{
+    box-sizing: border-box;
+    display: block;
+}
+
+.card-body h5, h6 {
+    align-items: center;
+    text-align: center;
+}
+
+.card-body .btn {
+    align-items: center;
+    margin-left: 45px;
+}

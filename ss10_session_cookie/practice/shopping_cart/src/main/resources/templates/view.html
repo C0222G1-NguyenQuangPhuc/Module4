@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link rel="stylesheet" type="text/css" th:href="@{/bootstrap/bootstrap413/css/bootstrap.min.css}"/>
+    <link rel="stylesheet" type="text/css" th:href="@{/bootstrap/bootstrap413/css/style.css}"/>
+</head>
+<body>
+<div class="container">
+    <div class="row">
+        <div id="cards-view" th:object="${product}" class="card col-md-3" style="width: 18rem;">
+            <img class="card-img-top" id="img-card" th:src="@{${product.description}}"
+                 style="width: 255px; height: 290px" alt="Card image cap">
+            <div class="card-body">
+                <h5 th:text="${product.name}" class="card-title"></h5>
+                <h6 th:text="${product.price} +' cành'" class="card-title"></h6>
+                <a class="btn btn-danger" th:href="@{/add/__${product.id}__(action='')}">Mang về nhà</a>
+                <a class="btn btn-secondary" th:href="@{/shop}">Back to Shop</a>
+            </div>
+        </div>
+        <div class="col-md-9">
+            <div class="card" th:object="${product}" style="width: 18rem;">
+                <ul class="list-group list-group-flush">
+                    <li class="list-group-item" th:text="'Tên: ' + ${product.name}"></li>
+                    <li class="list-group-item" th:text="'Giá: ' + ${product.price} + ' cành'"></li>
+                    <li class="list-group-item">Ngoan hiền, đam đảng</li>
+                    <li class="list-group-item">Chịu chơi, chịu khổ giỏi</li>
+                    <li class="list-group-item">Không cầm vật dụng nguy hiểm để dí bạn</li>
+                    <li class="list-group-item">Lặng lẽ cầm sổ đỏ ra đi</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script th:src="@{/bootstrap/jquery/jquery-3.5.1.min.js}"></script>
+<script th:src="@{/bootstrap/bootstrap413/js/bootstrap.bundle.min.js}"></script>
+</body>
+</html>
