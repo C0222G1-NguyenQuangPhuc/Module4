@@ -44,13 +44,27 @@ public class ProductController {
         return "redirect:/shop";
     }
 
-    @GetMapping("/remove/{id}")
-    public String removeFromCart(@PathVariable Long id, @ModelAttribute Cart cart, @RequestParam("action") String action) {
+    @GetMapping("/decrease/{id}")
+    public String decreaseCart(@PathVariable Long id, @ModelAttribute Cart cart, @RequestParam("action") String action) {
         Optional<Product> productOptional = iProductService.findById(id);
         if (!productOptional.isPresent()) {
             return "/error.404";
         }
         if (action.equals("decrease")) {
+            cart.decreaseProduct(productOptional.get());
+            return "redirect:/shopping-cart";
+        }
+        cart.addProduct(productOptional.get());
+        return "redirect:/shop";
+    }
+
+    @GetMapping("/remove/{id}")
+    public String removeCart(@PathVariable Long id, @ModelAttribute Cart cart, @RequestParam("action") String action) {
+        Optional<Product> productOptional = iProductService.findById(id);
+        if (!productOptional.isPresent()) {
+            return "/error.404";
+        }
+        if (action.equals("remove")) {
             cart.removeProduct(productOptional.get());
             return "redirect:/shopping-cart";
         }

@@ -21,4 +21,11 @@ public class ShoppingCartController {
         modelAndView.addObject("cart", cart);
         return modelAndView;
     }
+
+//    @GetMapping("")
+//    public String showCart(@ModelAttribute("cart") Cart cart, Model model){
+//        model.addAttribute("cart", cart);
+//        return "/cart";
+//    }
+
 }
