@@ -3,17 +3,21 @@
 <head th:replace="/layout :: head">
 </head>
 <body>
-<h3>List Categories</h3>
-<p>
-    <a th:href="@{/category/create}">
-        Add new categories
-    </a>
-</p>
-<div class="notify">
-    <div th:if="${success}">
-        <span th:text="${success}"></span>
-    </div>
-</div>
+<h3>List Blogs</h3>
+<!--<form th:action="@{/blogs/search}" th:object="${blog}" method="get" novalidate="novalidate">-->
+<!--    <input type="text" th:field="*{nameBlog}">-->
+<!--    <input type="submit" value="Search">-->
+<!--</form>-->
+<!--<p>-->
+<!--    <a th:href="@{/blogs/create}">-->
+<!--        Add new blog-->
+<!--    </a>-->
+<!--</p>-->
+<!--<div class="notify">-->
+<!--    <div th:if="${success}">-->
+<!--        <span th:text="${success}"></span>-->
+<!--    </div>-->
+<!--</div>-->
 <table id="products">
     <thead>
     <tr>
@@ -29,7 +33,7 @@
     </tr>
     </thead>
     <tbody>
-    <tr th:each="row, rowStat : ${blogList}">
+    <tr th:each="row: ${blogList}">
         <td th:text="${row.getIdBlog()}"></td>
         <td th:text="${row.getNameBlog()}"></td>
         <td th:text="${row.getAuthor()}"></td>
@@ -42,6 +46,15 @@
     </tr>
     </tbody>
 </table>
+<!--<span>-->
+<!--    <a th:if="${blogList.hasPrevious()}" th:href="@{/blogs(page = ${blogList.number - 1})}">Previous</a>-->
+<!--</span>-->
+<!--<span th:each="pageNo: ${#numbers.sequence(0,blogList.totalPages - 1)}">-->
+<!--    <a th:href="@{/blogs(page = ${pageNo})}" th:text="${pageNo + 1}"></a>-->
+<!--</span>-->
+<!--<span>-->
+<!--    <a th:if="${blogList.hasNext()}" th:href="@{/blogs(page = ${blogList.number +1})}">Next</a>-->
+<!--</span>-->
 <footer th:replace="/layout :: footer"></footer>
 </body>
 </html>

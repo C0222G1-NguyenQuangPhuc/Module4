@@ -10,6 +10,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.ModelAndView;
 
 @RestController
 @RequestMapping("/blogs")
@@ -26,6 +27,15 @@ public class BlogRestController {
          return new ResponseEntity<>(HttpStatus.NO_CONTENT);
         }
         return new ResponseEntity<>(blogList, HttpStatus.OK);
+    }
+
+    @GetMapping("/list")
+    public ModelAndView getBlogList(@RequestParam(name = "page", defaultValue = "0") int page) {
+        Sort sort = Sort.by("name_blog").ascending();
+        Page<Blog> blogList = iBlogService.findAllBlog(PageRequest.of(page, 2, sort));
+        ModelAndView modelAndView = new ModelAndView("/list");
+        modelAndView.addObject("blogList", blogList);
+        return modelAndView;
     }
 
     @GetMapping("/{id}")
