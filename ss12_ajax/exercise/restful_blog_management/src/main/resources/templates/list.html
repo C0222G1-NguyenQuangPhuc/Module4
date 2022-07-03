@@ -60,6 +60,7 @@
 
     //Load
     let number = 2;
+    let check = "";
     $(document).ready(function () {
         $('#btnLoad').click(function () {
             number = number + 1;
@@ -72,7 +73,12 @@
                     for (let i = 0; i < data.content.length; i++) {
                         content += loadDataTable(data.content[i]);
                     }
-                    document.getElementById("bodyTable").innerHTML = content;
+                    if (content !== check){
+                        check = content;
+                        document.getElementById("bodyTable").innerHTML = content;
+                    }else {
+                        document.getElementById("btnLoad").disabled = true;
+                    }
                 }
             })
         })
