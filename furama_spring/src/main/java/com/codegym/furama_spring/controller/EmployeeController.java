@@ -11,11 +11,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.servlet.mvc.support.RedirectAttributes;
-
-import javax.validation.Valid;
 
 @Controller
 @RequestMapping("/employees")
@@ -39,7 +35,7 @@ public class EmployeeController {
     @GetMapping("")
     public String showListEmployee(@RequestParam(name = "page", defaultValue = "0") int page, Model model) {
         Sort sort = Sort.by("employee_name").ascending();
-        Page<Employee> employeeList = iEmployeeService.findAllEmployee(PageRequest.of(page, 200, sort));
+        Page<Employee> employeeList = iEmployeeService.findAllEmployee(PageRequest.of(page, 4, sort));
         model.addAttribute("employeeList", employeeList);
         model.addAttribute("positionList", iPositionService.findAll());
         model.addAttribute("degreeList", iEducationDegreeService.findAll());
@@ -51,27 +47,19 @@ public class EmployeeController {
     @PostMapping("/save/user")
     public ResponseEntity<?> createUser(@RequestBody User user){
         iUserService.save(user);
-        return new ResponseEntity<>(HttpStatus.OK);
+        return new ResponseEntity<>(HttpStatus.CREATED);
     }
 
     @PostMapping("/save/employee")
     public ResponseEntity<?> createEmployee(@RequestBody Employee employee){
         iEmployeeService.save(employee);
+        return new ResponseEntity<>(HttpStatus.CREATED);
+    }
+
+    @PostMapping("/edit")
+    public ResponseEntity<?> editEmployee(@RequestBody Employee employee){
+        iEmployeeService.save(employee);
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
-    @PostMapping("/save")
-    public String save(@Valid @ModelAttribute Employee employee, BindingResult bindingResult, RedirectAttributes redirectAttributes, Model model) {
-        if (bindingResult.hasErrors()) {
-            model.addAttribute("positionList", iPositionService.findAll());
-            model.addAttribute("degreeList", iEducationDegreeService.findAll());
-            model.addAttribute("divisionList", iDivisionService.findAll());
-            model.addAttribute("userList", iUserService.findAll());
-            return "/employee/create";
-        } else {
-            iEmployeeService.save(employee);
-            redirectAttributes.addFlashAttribute("message", "Add new successful");
-            return "redirect:/employees";
-        }
-    }
 }
