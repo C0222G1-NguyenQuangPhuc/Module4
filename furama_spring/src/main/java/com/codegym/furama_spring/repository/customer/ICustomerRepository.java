@@ -16,7 +16,7 @@ public interface ICustomerRepository extends JpaRepository<Customer, Integer> {
 //            " from customer where status_delete = 1", nativeQuery = true)
 //    Page<Customer> findAllCustomer(Pageable pageable);
 
-    @Query(value = "select * from customer where status_delete = 1", nativeQuery = true)
+    @Query(value = "select * from customer where status_delete = 0", nativeQuery = true)
     Page<Customer> findAllCustomer(Pageable pageable);
 
     @Modifying

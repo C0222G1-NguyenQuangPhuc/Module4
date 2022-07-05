@@ -1,5 +1,7 @@
 package com.codegym.furama_spring.model.customer;
 
+import org.hibernate.annotations.ColumnDefault;
+
 import javax.persistence.*;
 import javax.validation.constraints.Pattern;
 
@@ -41,6 +43,7 @@ public class Customer {
     private String customerAddress;
 
     @Column(name = "status_delete")
+    @ColumnDefault("0")
     private Integer statusDelete;
 
     public Customer() {

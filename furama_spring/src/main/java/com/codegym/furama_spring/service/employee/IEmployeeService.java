@@ -9,4 +9,6 @@ public interface IEmployeeService {
     Page<Employee> findAllEmployee(Pageable pageable);
 
     void save(Employee employee);
+
+    void deleteById(Integer id);
 }

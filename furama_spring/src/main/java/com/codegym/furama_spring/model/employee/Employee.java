@@ -1,6 +1,11 @@
 package com.codegym.furama_spring.model.employee;
 
+import org.hibernate.annotations.ColumnDefault;
+
 import javax.persistence.*;
+import javax.validation.constraints.Min;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.Pattern;
 
 @Entity(name = "employee")
 public class Employee {
@@ -10,24 +15,31 @@ public class Employee {
     @Column(name = "employee_id")
     private Integer employeeId;
 
+    @Pattern(regexp = "^[A-Z][A-Za-z0-9\\s]+$", message = "Tên phải viết hoa chữ cái đầu")
     @Column(name = "employee_name")
     private String employeeName;
 
+    @NotBlank(message = "Không được để trống")
     @Column(name = "employee_birthday")
     private String employeeBirthDay;
 
+    @Pattern(regexp = "^[0-9]+$", message = "Chứng minh thư phải có định dạng XXXXXXXXX hoặc XXXXXXXXXXXX (x = 0-9)")
     @Column(name = "employee_id_card")
     private String employeeIdCard;
 
+    @Min(value = 10, message = "Lương thấp nhất bắt đầu từ 10")
     @Column(name = "employee_salary")
     private Double employeeSalary;
 
+    @Pattern(regexp = "^(84|0[3|5|7|8|9])+([0-9]{8})$", message = "Số điện thoại có định dạng (84)+90xxxxxxx hoặc (84)+91xxxxxxx")
     @Column(name = "employee_phone")
     private String employeePhone;
 
+    @Pattern(regexp = "^[\\w\\-\\.]+@([\\w-]+\\.)+[\\w-]{2,4}$", message = "Email phải có định dạng abcxyz@gmail.com")
     @Column(name = "employee_email")
     private String employeeEmail;
 
+    @NotBlank(message = "Không được để trống")
     @Column(name = "employee_address")
     private String employeeAddress;
 
@@ -49,6 +61,7 @@ public class Employee {
     private User user;
 
     @Column(name = "status_delete")
+    @ColumnDefault(value = "0")
     private Integer statusDelete;
 
     public Employee() {

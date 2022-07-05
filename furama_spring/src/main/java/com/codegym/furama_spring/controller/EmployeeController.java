@@ -9,11 +9,16 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
+import org.springframework.validation.FieldError;
+import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.ModelAndView;
 
-@Controller
+import javax.validation.Valid;
+import java.util.HashMap;
+import java.util.Map;
+
+@RestController
 @RequestMapping("/employees")
 public class EmployeeController {
 
@@ -33,14 +38,15 @@ public class EmployeeController {
     private IUserService iUserService;
 
     @GetMapping("")
-    public String showListEmployee(@RequestParam(name = "page", defaultValue = "0") int page, Model model) {
+    public ModelAndView showListEmployee(@RequestParam(name = "page", defaultValue = "0") int page) {
         Sort sort = Sort.by("employee_name").ascending();
+        ModelAndView model = new ModelAndView("/employee/list");
         Page<Employee> employeeList = iEmployeeService.findAllEmployee(PageRequest.of(page, 4, sort));
-        model.addAttribute("employeeList", employeeList);
-        model.addAttribute("positionList", iPositionService.findAll());
-        model.addAttribute("degreeList", iEducationDegreeService.findAll());
-        model.addAttribute("divisionList", iDivisionService.findAll());
-        return "/employee/list";
+        model.addObject("employeeList", employeeList);
+        model.addObject("positionList", iPositionService.findAll());
+        model.addObject("degreeList", iEducationDegreeService.findAll());
+        model.addObject("divisionList", iDivisionService.findAll());
+        return model;
     }
 
 
@@ -51,15 +57,34 @@ public class EmployeeController {
     }
 
     @PostMapping("/save/employee")
-    public ResponseEntity<?> createEmployee(@RequestBody Employee employee){
+    public ResponseEntity<?> createEmployee(@Valid @RequestBody Employee employee){
         iEmployeeService.save(employee);
         return new ResponseEntity<>(HttpStatus.CREATED);
     }
 
     @PostMapping("/edit")
-    public ResponseEntity<?> editEmployee(@RequestBody Employee employee){
+    public ResponseEntity<?> editEmployee(@Valid @RequestBody Employee employee){
         iEmployeeService.save(employee);
         return new ResponseEntity<>(HttpStatus.OK);
+    }
+
+    @GetMapping("/delete/{id}")
+    public ResponseEntity<?> deleteEmployee(@PathVariable Integer id){
+        iEmployeeService.deleteById(id);
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
+
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    @ExceptionHandler(MethodArgumentNotValidException.class)
+    public Map<String, String> handleValidationExceptions(
+            MethodArgumentNotValidException ex) {
+        Map<String, String> errors = new HashMap<>();
+        ex.getBindingResult().getAllErrors().forEach((error) -> {
+            String fieldName = ((FieldError) error).getField();
+            String errorMessage = error.getDefaultMessage();
+            errors.put(fieldName, errorMessage);
+        });
+        return errors;
     }
 
 }

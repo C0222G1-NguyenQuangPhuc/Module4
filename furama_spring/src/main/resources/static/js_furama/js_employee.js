@@ -1,9 +1,10 @@
+// Function Add New
 $(document).ready(function () {
   $('#btnAddNew').click(function (event) {
     let username = document.getElementById("username").value;
     let password = document.getElementById("password").value;
     let jsonUser = {
-        userName: username,
+        username: username,
         password: password
     }
     $.ajax({
@@ -41,7 +42,7 @@ $(document).ready(function () {
                     divisionId: division
                 },
                 user:{
-                    userName: user
+                    username: user
                 }
             }
             $.ajax({
@@ -62,16 +63,49 @@ $(document).ready(function () {
                     document.getElementById("password").value = "";
                     document.getElementById("bodyMessModal").innerHTML = "Thêm mới thành công";
                     $('#messModal').modal('show');
-                },error: function () {
-                    $('#addModal').modal('hide');
-                    document.getElementById("bodyMessModal").innerHTML = "tạo nhân viên ko thành công";
-                    $('#messModal').modal('show');
+                },error: function (event) {
+                    console.log(event.responseJSON);
+                    if (event.responseJSON.employeeName !== "" && event.responseJSON.employeeName !== undefined){
+                        document.getElementById("nameError").innerHTML = event.responseJSON.employeeName;
+                    }else {
+                        document.getElementById("nameError").innerHTML = "";
+                    }
+                    if (event.responseJSON.employeeBirthDay !== "" && event.responseJSON.employeeBirthDay !== undefined){
+                        document.getElementById("birthError").innerHTML = event.responseJSON.employeeBirthDay;
+                    }else {
+                        document.getElementById("birthError").innerHTML = "";
+                    }
+                    if (event.responseJSON.employeeIdCard !== "" && event.responseJSON.employeeIdCard !== undefined){
+                        document.getElementById("idCardError").innerHTML = event.responseJSON.employeeIdCard;
+                    }else {
+                        document.getElementById("idCardError").innerHTML = "";
+                    }
+                    if (event.responseJSON.employeePhone !== "" && event.responseJSON.employeePhone !== undefined){
+                        document.getElementById("phoneError").innerHTML = event.responseJSON.employeePhone;
+                    }else {
+                        document.getElementById("phoneError").innerHTML = "";
+                    }
+                    if (event.responseJSON.employeeEmail !== "" && event.responseJSON.employeeEmail !== undefined){
+                        document.getElementById("emailError").innerHTML = event.responseJSON.employeeEmail;
+                    }else {
+                        document.getElementById("emailError").innerHTML = "";
+                    }
+                    if (event.responseJSON.employeeAddress !== "" && event.responseJSON.employeeAddress !== undefined){
+                        document.getElementById("addressError").innerHTML = event.responseJSON.employeeAddress;
+                    }else {
+                        document.getElementById("addressError").innerHTML = "";
+                    }
+                    if (event.responseJSON.employeeSalary !== "" && event.responseJSON.employeeSalary !== undefined){
+                        document.getElementById("salaryError").innerHTML = event.responseJSON.employeeSalary;
+                    }else {
+                        document.getElementById("salaryError").innerHTML = "";
+                    }
                 }
             })
         },
         error: function (data) {
             $('#addModal').modal('hide');
-            document.getElementById("bodyMessModal").innerHTML = "tạo tài khoản ko thành công";
+            document.getElementById("bodyMessModal").innerHTML = "Tạo tài khoản ko thành công";
             $('#messModal').modal('show');
         }
     })
@@ -79,6 +113,7 @@ $(document).ready(function () {
   })
 })
 
+// Function get info edit
 function getInfo(id, name, birth, idCard, salary, phone, email, address, position, degree, division, user) {
     document.getElementById("idEdit").value = id;
     document.getElementById("nameEdit").value = name;
@@ -94,6 +129,7 @@ function getInfo(id, name, birth, idCard, salary, phone, email, address, positio
     document.getElementById("usernameEdit").value = user;
 }
 
+// function edit
 $(document).ready(function () {
     $('#btnEdit').click(function (event) {
         let id = document.getElementById("idEdit").value;
@@ -127,7 +163,7 @@ $(document).ready(function () {
                 divisionId: division
             },
             user:{
-                userName: user
+                username: user
             }
         }
         $.ajax({
@@ -138,6 +174,72 @@ $(document).ready(function () {
             success: function (data) {
                 $('#editModal').modal('hide');
                 document.getElementById("bodyMessModal").innerHTML = "Chỉnh sửa thành công";
+                $('#messModal').modal('show');
+            },
+            error: function (event) {
+                console.log(event.responseJSON);
+                if (event.responseJSON.employeeName !== "" && event.responseJSON.employeeName !== undefined){
+                    document.getElementById("nameEditError").innerHTML = event.responseJSON.employeeName;
+                }else {
+                    document.getElementById("nameEditError").innerHTML = "";
+                }
+                if (event.responseJSON.employeeBirthDay !== "" && event.responseJSON.employeeBirthDay !== undefined){
+                    document.getElementById("birthEditError").innerHTML = event.responseJSON.employeeBirthDay;
+                }else {
+                    document.getElementById("birthEditError").innerHTML = "";
+                }
+                if (event.responseJSON.employeeIdCard !== "" && event.responseJSON.employeeIdCard !== undefined){
+                    document.getElementById("idCardEditError").innerHTML = event.responseJSON.employeeIdCard;
+                }else {
+                    document.getElementById("idCardEditError").innerHTML = "";
+                }
+                if (event.responseJSON.employeePhone !== "" && event.responseJSON.employeePhone !== undefined){
+                    document.getElementById("phoneEditError").innerHTML = event.responseJSON.employeePhone;
+                }else {
+                    document.getElementById("phoneEditError").innerHTML = "";
+                }
+                if (event.responseJSON.employeeEmail !== "" && event.responseJSON.employeeEmail !== undefined){
+                    document.getElementById("emailEditError").innerHTML = event.responseJSON.employeeEmail;
+                }else {
+                    document.getElementById("emailEditError").innerHTML = "";
+                }
+                if (event.responseJSON.employeeAddress !== "" && event.responseJSON.employeeAddress !== undefined){
+                    document.getElementById("addressEditError").innerHTML = event.responseJSON.employeeAddress;
+                }else {
+                    document.getElementById("addressEditError").innerHTML = "";
+                }
+                if (event.responseJSON.employeeSalary !== "" && event.responseJSON.employeeSalary !== undefined){
+                    document.getElementById("salaryEditError").innerHTML = event.responseJSON.employeeSalary;
+                }else {
+                    document.getElementById("salaryEditError").innerHTML = "";
+                }
+            }
+        })
+        event.preventDefault();
+    })
+})
+
+// Function get info delete
+function showInfo(id, name) {
+    document.getElementById("confirm").innerHTML = "Chắc chắn xóa nhân viên có tên <br>" + name;
+    document.getElementById("idDelete").value = id;
+}
+
+// Function delete
+$(document).ready(function () {
+    $('#btnComfirmDelete').click(function (event) {
+        let id = document.getElementById("idDelete").value;
+        $.ajax({
+            type: 'GET',
+            url: `/employees/delete/${id}`,
+            success: function () {
+                $('#deleteModal').modal('hide');
+                document.getElementById("bodyMessModal").innerHTML = "Xóa thành công";
+                $('#messModal').modal('show');
+            },
+            error: function () {
+                $('#deleteModal').modal('hide');
+                document.getElementById("bodyMessModal").innerHTML = "Xóa không thành công";
                 $('#messModal').modal('show');
             }
         })
