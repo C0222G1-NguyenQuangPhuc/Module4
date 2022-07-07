@@ -21,7 +21,7 @@ public class CustomerService implements ICustomerService {
 
     @Override
     public void save(Customer customer) {
-        iCustomerRepository.save(customer.getCustomerCode(), customer.getCustomerType().getCustomerTypeId(), customer.getCustomerName(), customer.getCustomerBirth(), customer.getCustomerGender(), customer.getCustomerIdCard(),customer.getCustomerPhone(), customer.getCustomerEmail(), customer.getCustomerAddress());
+        iCustomerRepository.save(customer.getCustomerCode(), customer.getCustomerType().getCustomerTypeId(), customer.getCustomerName(), customer.getCustomerBirth(), customer.getCustomerGender(), customer.getCustomerIdCard(), customer.getCustomerPhone(), customer.getCustomerEmail(), customer.getCustomerAddress());
     }
 
     @Override

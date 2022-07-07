@@ -1,11 +1,13 @@
 package com.codegym.furama_spring.model.employee;
 
-import org.hibernate.annotations.ColumnDefault;
+import com.codegym.furama_spring.model.contract.Contract;
+import com.fasterxml.jackson.annotation.JsonBackReference;
 
 import javax.persistence.*;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Pattern;
+import java.util.List;
 
 @Entity(name = "employee")
 public class Employee {
@@ -15,7 +17,8 @@ public class Employee {
     @Column(name = "employee_id")
     private Integer employeeId;
 
-    @Pattern(regexp = "^[A-Z][A-Za-z0-9\\s]+$", message = "Tên phải viết hoa chữ cái đầu")
+    @Pattern(regexp = "^([a-zA-Z_ÀÁÂÃÈÉÊÌÍÒÓÔÕÙÚĂĐĨŨƠàáâãèéêìíòóôõùúăđĩũơƯĂẠẢẤẦẨẪẬẮẰẲẴẶẸẺẼỀỀỂưăạảấầẩẫậắằẳẵặẹẻẽềềểỄỆỈỊỌỎỐỒỔỖỘỚỜỞỠỢỤỦỨỪễệỉịọỏốồổỗộớờởỡợụủứừỬỮỰỲỴÝỶỸửữựỳỵỷỹ]\\s*?)+$",
+            message = "Tên phải viết hoa chữ cái đầu")
     @Column(name = "employee_name")
     private String employeeName;
 
@@ -61,8 +64,11 @@ public class Employee {
     private User user;
 
     @Column(name = "status_delete")
-    @ColumnDefault(value = "0")
-    private Integer statusDelete;
+    private Integer statusDelete = 0;
+
+    @OneToMany(mappedBy = "employee")
+    @JsonBackReference
+    private List<Contract> contractList;
 
     public Employee() {
     }
@@ -185,5 +191,13 @@ public class Employee {
 
     public void setStatusDelete(Integer statusDelete) {
         this.statusDelete = statusDelete;
+    }
+
+    public List<Contract> getContractList() {
+        return contractList;
+    }
+
+    public void setContractList(List<Contract> contractList) {
+        this.contractList = contractList;
     }
 }

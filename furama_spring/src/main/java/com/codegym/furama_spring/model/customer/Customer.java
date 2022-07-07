@@ -1,9 +1,12 @@
 package com.codegym.furama_spring.model.customer;
 
+import com.codegym.furama_spring.model.contract.Contract;
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import org.hibernate.annotations.ColumnDefault;
 
 import javax.persistence.*;
 import javax.validation.constraints.Pattern;
+import java.util.List;
 
 @Entity(name = "customer")
 public class Customer {
@@ -45,6 +48,10 @@ public class Customer {
     @Column(name = "status_delete")
     @ColumnDefault("0")
     private Integer statusDelete;
+
+    @OneToMany(mappedBy = "customer")
+    @JsonBackReference
+    private List<Contract> contractList;
 
     public Customer() {
     }
@@ -149,5 +156,13 @@ public class Customer {
 
     public void setStatusDelete(Integer statusDelete) {
         this.statusDelete = statusDelete;
+    }
+
+    public List<Contract> getContractList() {
+        return contractList;
+    }
+
+    public void setContractList(List<Contract> contractList) {
+        this.contractList = contractList;
     }
 }

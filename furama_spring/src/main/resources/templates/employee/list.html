@@ -11,60 +11,48 @@
     <nav class="navbar navbar-expand-lg navbar-light bg-light">
         <div class="collapse navbar-collapse row w-100">
             <div class="col-md-1">
-                <img src="image/logo_furama_2.png" alt="" height="100px">
+                <img th:src="@{/image/logo_furama_2.png}" alt="" height="100px">
             </div>
             <div class="col-md-8">
                 <ul class="navbar-nav mr-auto w-100" id="navbarSupportedContent">
                     <li class="nav-item active">
-                        <a class="nav-link" href="/index.jsp">Home<span class="sr-only">(current)</span></a>
+                        <a class="nav-link" href="/">Trang chủ<span class="sr-only">(current)</span></a>
                     </li>
                     <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown1" role="button"
+                        <a class="nav-link dropdown-toggle" href= "#" id="navbarDropdown1" role="button"
                            data-toggle="dropdown" aria-expanded="false">
-                            Employee
+                            Nhân viên
                         </a>
                         <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                            <a class="dropdown-item" href="/employees">List Employee</a>
-                            <a class="dropdown-item" href="/employees?action=create">Create New Employee</a>
-                            <div class="dropdown-divider"></div>
-                            <a class="dropdown-item" href="#">Something else here</a>
+                            <a class="dropdown-item" th:href="@{/employees}">Danh sách nhân viên</a>
                         </div>
                     </li>
                     <li class="nav-item dropdown">
                         <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button"
                            data-toggle="dropdown" aria-expanded="false">
-                            Customer
+                            Khách hàng
                         </a>
                         <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                            <a class="dropdown-item" href="/customers">List Customer</a>
-                            <a class="dropdown-item" href="/customers?action=create">Create New Customer</a>
-                            <div class="dropdown-divider"></div>
-                            <a class="dropdown-item" href="#">Something else here</a>
+                            <a class="dropdown-item" th:href="@{/customers}">Danh sách khách hàng</a>
                         </div>
                     </li>
                     <li class="nav-item active">
-                        <a class="nav-link" href="/facility">Service<span class="sr-only">(current)</span></a>
+                        <a class="nav-link" th:href="@{/facility}">Dịch vụ<span class="sr-only">(current)</span></a>
                     </li>
                     <li class="nav-item active">
-                        <a class="nav-link" href="#">Contract<span class="sr-only">(current)</span></a>
+                        <a class="nav-link" th:href="@{/contract}">Hợp đồng<span class="sr-only">(current)</span></a>
                     </li>
                 </ul>
-            </div>
-            <div class="col-md-3">
-                <form class="form-inline my-2 my-lg-0">
-                    <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
-                    <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
-                </form>
             </div>
         </div>
     </nav>
 </header>
 <h3>Danh sách nhân viên</h3>
-<!--<form th:action="@{/customers/search}" th:object="${product}" method="get" novalidate="novalidate">-->
-<!--    <input type="text" th:field="*{nameProduct}">-->
-<!--    <input type="submit" value="Search">-->
-<!--</form>-->
 <div class="container-fluid">
+    <div>
+        <input type="text" id="keyword" placeholder="Nhập tên nhân viên muốn tìm kiếm">
+        <button type="button" id="btnSearch" class="btn btn-secondary btn-outline-secondary">Tìm kiếm</button>
+    </div>
     <button type="button" class="btn btn-dark" data-toggle="modal" data-target="#addModal">Thêm mới</button>
     <table id="tableCustomer" class="table table-striped table-bordered col" style="width: 100%">
         <thead>
@@ -75,15 +63,15 @@
             <th scope="col">CMND</th>
             <th scope="col">Lương</th>
             <th scope="col">Số điện thoại</th>
+            <th scope="col">Email</th>
             <th scope="col">Địa chỉ</th>
             <th scope="col">Vị trí</th>
             <th scope="col">Cấp bậc</th>
             <th scope="col">Bộ phận</th>
-            <th scope="col">User</th>
-            <th>Chức năng</th>
+            <th colspan="2">Chức năng</th>
         </tr>
         </thead>
-        <tbody>
+        <tbody id="bodyTable">
         <tr th:each="row, rowStat : ${employeeList}">
             <td th:text="${row.employeeId}"></td>
             <td th:text="${row.employeeName}"></td>
@@ -97,29 +85,35 @@
             <td th:text="${row.educationDegree.educationDegreeName}"></td>
             <td th:text="${row.division.divisionName}"></td>
             <td class="d-flex">
-                <div class="col-6"><button type="button" class="btn btn-dark btn-outline-dark" data-toggle="modal" data-target="#editModal"
-                                           th:attr="onclick=|getInfo('${row.employeeId}', '${row.employeeName}', '${row.employeeBirthDay}',
+                <div class="col-6">
+                    <button type="button" class="btn btn-dark btn-outline-dark" data-toggle="modal"
+                            data-target="#editModal"
+                            th:attr="onclick=|getInfo('${row.employeeId}', '${row.employeeName}', '${row.employeeBirthDay}',
                                               '${row.employeeIdCard}', '${row.employeeSalary}', '${row.employeePhone}',
                                               '${row.employeeEmail}', '${row.employeeAddress}', '${row.position.positionId}',
                                               '${row.educationDegree.educationDegreeId}', '${row.division.divisionId}',
-                                              '${row.user.username}')|">Sửa</button></div>
-                <div class="col-6"><button type="button" id="btnDelete" th:attr="onclick=|showInfo('${row.employeeId}','${row.employeeName}')|"
-                                           data-toggle="modal" data-target="#deleteModal" class="btn btn-danger btn-outline-danger">Xóa</button></div>
+                                              '${row.user.username}')|">Sửa
+                    </button>
+                </div>
+                <div class="col-6">
+                    <button type="button" id="btnDelete"
+                            th:attr="onclick=|showInfo('${row.employeeId}','${row.employeeName}')|"
+                            data-toggle="modal" data-target="#deleteModal" class="btn btn-danger btn-outline-danger">Xóa
+                    </button>
+                </div>
             </td>
         </tr>
         </tbody>
     </table>
 </div>
-
-<span>
-    <a th:if="${employeeList.hasPrevious()}" th:href="@{/employees(page = ${employeeList.number - 1})}">Previous</a>
-</span>
-<span th:each="pageNo: ${#numbers.sequence(0,employeeList.totalPages - 1)}">
-    <a th:href="@{/employees(page = ${pageNo})}" th:text="${pageNo + 1}"></a>
-</span>
-<span>
-    <a th:if="${employeeList.hasNext()}" th:href="@{/employees(page = ${employeeList.number +1})}">Next</a>
-</span>
+<nav aria-label="Page navigation example">
+    <ul class="pagination justify-content-center">
+        <li class="page-item"><a class="page-link" th:if="${employeeList.hasPrevious()}" th:href="@{/employees(page = ${employeeList.number - 1})}">Previous</a></li>
+        <li th:each="pageNo: ${#numbers.sequence(0,employeeList.totalPages - 1)}" class="page-item">
+            <a class="page-link" th:href="@{/employees(page = ${pageNo})}" th:text="${pageNo + 1}"></a>
+        <li class="page-item"> <a class="page-link" th:if="${employeeList.hasNext()}" th:href="@{/employees(page = ${employeeList.number +1})}">Next</a></li>
+    </ul>
+</nav>
 
 <!--Delete modal-->
 <div class="modal fade" id="deleteModal" data-backdrop="static" data-keyboard="false" tabindex="-1"
@@ -140,90 +134,94 @@
 <!--Delete modal-->
 
 <!--Add new modal-->
-<div id="addModal" class="modal fade bd-example-modal-lg" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+<div id="addModal" class="modal fade bd-example-modal-lg" tabindex="-1" role="dialog"
+     aria-labelledby="myLargeModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-lg">
         <div class="modal-content">
-                <h4 style="text-align: center; color: #1b1e21" class="modal-title" id="exampleModalLabel">Form thêm mới</h4>
-                <div class="d-flex">
-                    <div class="col-6">
-                        <div class="form-group">
-                            <label>Tên nhân viên</label>
-                            <input type="text" class="form-control" id="name"
-                                   placeholder="Nhập tên nhân viên" required>
-                            <p style="color: red" id="nameError"></p>
-                        </div>
-                        <div class="form-group">
-                            <label>Ngày Sinh</label>
-                            <input placeholder="Selected date" type="date" id="birth"
-                                   class="form-control datepicker" required>
-                            <p style="color: red" id="birthError"></p>
-                        </div>
-                        <div class="form-group">
-                            <label>Số CMND</label>
-                            <input type="text" class="form-control" id="idCard"
-                                   placeholder="Nhập số CMND" required>
-                            <p style="color: red" id="idCardError"></p>
-                        </div>
-                        <div class="form-group">
-                            <label>Số điện thoại</label>
-                            <input type="text" class="form-control" id="phone"
-                                   placeholder="Nhập số điện thoại" required>
-                            <p style="color: red" id="phoneError"></p>
-                        </div>
-                        <div class="form-group">
-                            <label>Email</label>
-                            <input type="text" class="form-control" id="email"
-                                   placeholder="Nhập email" required>
-                            <p style="color: red" id="emailError"></p>
-                        </div>
-                        <div class="form-group">
-                            <label>Địa chỉ</label>
-                            <input type="text" class="form-control" id="address"
-                                   placeholder="Nhập địa chỉ" required>
-                            <p style="color: red" id="addressError"></p>
-                        </div>
+            <h4 style="text-align: center; color: #1b1e21" class="modal-title" id="exampleModalLabel">Form thêm mới</h4>
+            <div class="d-flex">
+                <div class="col-6">
+                    <div class="form-group">
+                        <label>Tên nhân viên</label>
+                        <input type="text" class="form-control" id="name"
+                               placeholder="Nhập tên nhân viên" required>
+                        <p style="color: red" id="nameError"></p>
                     </div>
-                    <div class="col-6">
-                        <div class="form-group">
-                            <label>Mức lương</label>
-                            <input type="text" class="form-control" id="salary"
-                                   placeholder="Nhập mức lương" required>
-                            <p style="color: red" id="salaryError"></p>
-                        </div>
-                        <div class="form-group">
-                            <label>Vị trí</label>
-                            <select class="custom-select" id="position">
-                                <option th:each="position : ${positionList}" th:value="${position.positionId}" th:text="${position.positionName}">
-                                </option>
-                            </select>
-                        </div>
-                        <div class="form-group">
-                            <label>Trình độ</label>
-                            <select class="custom-select" id="educationDegree">
-                                <option th:each="degree : ${degreeList}" th:value="${degree.educationDegreeId}" th:text="${degree.educationDegreeName}">
-                                </option>
-                            </select>
-                        </div>
-                        <div class="form-group">
-                            <label>Bộ phận</label>
-                            <select class="custom-select" id="division">
-                                <option th:each="division : ${divisionList}" th:value="${division.divisionId}" th:text="${division.divisionName}">
-                                </option>
-                            </select>
-                        </div>
-                        <div class="form-group">
-                            <label>Tên người dùng</label>
-                            <input type="text" class="form-control" id="username"
-                                   placeholder="Nhập tên người dùng" required>
-                            <p style="color: red" id="userError"></p>
-                        </div>
-                        <div class="form-group">
-                            <label>Mật khẩu</label>
-                            <input type="password" class="form-control" id="password"
-                                   placeholder="Nhập mật khẩu">
-                        </div>
+                    <div class="form-group">
+                        <label>Ngày Sinh</label>
+                        <input placeholder="Selected date" type="date" id="birth"
+                               class="form-control datepicker" required>
+                        <p style="color: red" id="birthError"></p>
+                    </div>
+                    <div class="form-group">
+                        <label>Số CMND</label>
+                        <input type="text" class="form-control" id="idCard"
+                               placeholder="Nhập số CMND" required>
+                        <p style="color: red" id="idCardError"></p>
+                    </div>
+                    <div class="form-group">
+                        <label>Số điện thoại</label>
+                        <input type="text" class="form-control" id="phone"
+                               placeholder="Nhập số điện thoại" required>
+                        <p style="color: red" id="phoneError"></p>
+                    </div>
+                    <div class="form-group">
+                        <label>Email</label>
+                        <input type="text" class="form-control" id="email"
+                               placeholder="Nhập email" required>
+                        <p style="color: red" id="emailError"></p>
+                    </div>
+                    <div class="form-group">
+                        <label>Địa chỉ</label>
+                        <input type="text" class="form-control" id="address"
+                               placeholder="Nhập địa chỉ" required>
+                        <p style="color: red" id="addressError"></p>
                     </div>
                 </div>
+                <div class="col-6">
+                    <div class="form-group">
+                        <label>Mức lương</label>
+                        <input type="text" class="form-control" id="salary"
+                               placeholder="Nhập mức lương" required>
+                        <p style="color: red" id="salaryError"></p>
+                    </div>
+                    <div class="form-group">
+                        <label>Vị trí</label>
+                        <select class="custom-select" id="position">
+                            <option th:each="position : ${positionList}" th:value="${position.positionId}"
+                                    th:text="${position.positionName}">
+                            </option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>Trình độ</label>
+                        <select class="custom-select" id="educationDegree">
+                            <option th:each="degree : ${degreeList}" th:value="${degree.educationDegreeId}"
+                                    th:text="${degree.educationDegreeName}">
+                            </option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>Bộ phận</label>
+                        <select class="custom-select" id="division">
+                            <option th:each="division : ${divisionList}" th:value="${division.divisionId}"
+                                    th:text="${division.divisionName}">
+                            </option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>Tên người dùng</label>
+                        <input type="text" class="form-control" id="username"
+                               placeholder="Nhập tên người dùng" required>
+                        <p style="color: red" id="userError"></p>
+                    </div>
+                    <div class="form-group">
+                        <label>Mật khẩu</label>
+                        <input type="password" class="form-control" id="password"
+                               placeholder="Nhập mật khẩu">
+                    </div>
+                </div>
+            </div>
             <div class="form-group">
                 <button type="button" id="btnAddNew" class="btn btn-primary btn-outline-primary">Lưu</button>
             </div>
@@ -236,10 +234,12 @@
 <!--Add new modal-->
 
 <!--Edit modal-->
-<div id="editModal" class="modal fade bd-example-modal-lg" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+<div id="editModal" class="modal fade bd-example-modal-lg" tabindex="-1" role="dialog"
+     aria-labelledby="myLargeModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-lg">
         <div class="modal-content">
-            <h4 style="text-align: center; color: #1b1e21" class="modal-title" id="editModalLabel">Form chỉnh sửa thông tin nhân viên</h4>
+            <h4 style="text-align: center; color: #1b1e21" class="modal-title" id="editModalLabel">Form chỉnh sửa thông
+                tin nhân viên</h4>
             <div class="d-flex">
                 <div class="col-6">
                     <div class="form-group">
@@ -292,21 +292,24 @@
                     <div class="form-group">
                         <label>Vị trí</label>
                         <select class="custom-select" id="positionEdit">
-                            <option th:each="position : ${positionList}" th:value="${position.positionId}" th:text="${position.positionName}">
+                            <option th:each="position : ${positionList}" th:value="${position.positionId}"
+                                    th:text="${position.positionName}">
                             </option>
                         </select>
                     </div>
                     <div class="form-group">
                         <label>Trình độ</label>
                         <select class="custom-select" id="educationDegreeEdit">
-                            <option th:each="degree : ${degreeList}" th:value="${degree.educationDegreeId}" th:text="${degree.educationDegreeName}">
+                            <option th:each="degree : ${degreeList}" th:value="${degree.educationDegreeId}"
+                                    th:text="${degree.educationDegreeName}">
                             </option>
                         </select>
                     </div>
                     <div class="form-group">
                         <label>Bộ phận</label>
                         <select class="custom-select" id="divisionEdit">
-                            <option th:each="division : ${divisionList}" th:value="${division.divisionId}" th:text="${division.divisionName}">
+                            <option th:each="division : ${divisionList}" th:value="${division.divisionId}"
+                                    th:text="${division.divisionName}">
                             </option>
                         </select>
                     </div>
@@ -328,7 +331,8 @@
 <!--Edit modal-->
 
 <!-- Modal mess -->
-<div class="modal fade" id="messModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabelmessModal" aria-hidden="true">
+<div class="modal fade" id="messModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabelmessModal"
+     aria-hidden="true">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">

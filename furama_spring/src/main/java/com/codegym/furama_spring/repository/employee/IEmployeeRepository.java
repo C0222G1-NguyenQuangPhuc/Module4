@@ -19,4 +19,6 @@ public interface IEmployeeRepository extends JpaRepository<Employee, Integer> {
     @Query(value = "update employee set status_delete = 1 where employee_id = :id", nativeQuery = true)
     void deleteById(@Param("id") Integer id);
 
+    @Query(value = "select * from employee where employee_name like :name", nativeQuery = true)
+    Page<Employee> searchByName(@Param("name") String keyword, Pageable pageable);
 }

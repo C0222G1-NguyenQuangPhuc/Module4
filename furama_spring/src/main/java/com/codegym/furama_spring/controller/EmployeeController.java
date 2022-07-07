@@ -39,7 +39,7 @@ public class EmployeeController {
 
     @GetMapping("")
     public ModelAndView showListEmployee(@RequestParam(name = "page", defaultValue = "0") int page) {
-        Sort sort = Sort.by("employee_name").ascending();
+        Sort sort = Sort.by("employee_id").ascending();
         ModelAndView model = new ModelAndView("/employee/list");
         Page<Employee> employeeList = iEmployeeService.findAllEmployee(PageRequest.of(page, 4, sort));
         model.addObject("employeeList", employeeList);
@@ -51,27 +51,34 @@ public class EmployeeController {
 
 
     @PostMapping("/save/user")
-    public ResponseEntity<?> createUser(@RequestBody User user){
+    public ResponseEntity<?> createUser(@RequestBody User user) {
         iUserService.save(user);
         return new ResponseEntity<>(HttpStatus.CREATED);
     }
 
     @PostMapping("/save/employee")
-    public ResponseEntity<?> createEmployee(@Valid @RequestBody Employee employee){
+    public ResponseEntity<?> createEmployee(@Valid @RequestBody Employee employee) {
         iEmployeeService.save(employee);
         return new ResponseEntity<>(HttpStatus.CREATED);
     }
 
     @PostMapping("/edit")
-    public ResponseEntity<?> editEmployee(@Valid @RequestBody Employee employee){
+    public ResponseEntity<?> editEmployee(@Valid @RequestBody Employee employee) {
         iEmployeeService.save(employee);
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
     @GetMapping("/delete/{id}")
-    public ResponseEntity<?> deleteEmployee(@PathVariable Integer id){
+    public ResponseEntity<?> deleteEmployee(@PathVariable Integer id) {
         iEmployeeService.deleteById(id);
         return new ResponseEntity<>(HttpStatus.OK);
+    }
+
+    @GetMapping("/search/{key}")
+    public ResponseEntity<?> searchEmployee(@PathVariable String key) {
+        Sort sort = Sort.by("employee_name").ascending();
+        Page<Employee> listSearch = iEmployeeService.searchByName(key, PageRequest.of(0, 100, sort));
+        return new ResponseEntity<>(listSearch, HttpStatus.OK);
     }
 
     @ResponseStatus(HttpStatus.BAD_REQUEST)

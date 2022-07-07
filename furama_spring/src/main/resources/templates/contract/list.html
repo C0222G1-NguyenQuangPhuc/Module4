@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link rel="stylesheet" type="text/css" th:href="@{/bootstrap/bootstrap413/css/bootstrap.min.css}"/>
+    <link rel="stylesheet" type="text/css" th:href="@{/bootstrap/bootstrap413/css/style.css}"/>
+</head>
+<body>
+<h3 class="justify-content-center">Danh sách hợp đồng</h3>
+<table id="tableCustomer" class="table table-striped table-bordered col" style="width: 100%">
+    <button type="button" class="btn btn-dark" data-toggle="modal" data-target="#addModal">Thêm mới</button>
+    <thead>
+    <tr>
+        <th scope="col">No</th>
+        <th scope="col">Khách hàng</th>
+        <th scope="col">Nhân viên</th>
+        <th scope="col">Dịch vụ</th>
+        <th scope="col">Ngày bắt đầu</th>
+        <th scope="col">Ngày kết thúc</th>
+        <th scope="col">Đặt trước</th>
+        <th colspan="2">Chức năng</th>
+    </tr>
+    </thead>
+    <tbody id="bodyTable">
+    <tr th:each="row, rowStat : ${contractList}">
+        <td th:text="${row.contractId}"></td>
+        <td th:text="${row.customer.customerName}"></td>
+        <td th:text="${row.employee.employeeName}"></td>
+        <td th:text="${row.facility.facilityName}"></td>
+        <td th:text="${row.startDate}"></td>
+        <td th:text="${row.endDate}"></td>
+        <td th:text="${row.deposit}"></td>
+        <td class="d-flex">
+            <div class="col-6">
+                <button type="button" class="btn btn-dark btn-outline-dark" data-toggle="modal"
+                        data-target="#editModal"
+                        th:attr="onclick=|getInfo('${row.contractId}', '${row.customer.customerName}', '${row.employee.employeeName}',
+                                              '${row.facility.facilityName}', '${row.startDate}', '${row.endDate}',
+                                              '${row.deposit}')|">Sửa
+                </button>
+            </div>
+            <div class="col-6">
+                <button type="button" id="btnDelete" th:attr="onclick=|showInfo('${row.contractId}')|"
+                        data-toggle="modal" data-target="#deleteModal" class="btn btn-danger btn-outline-danger">Xóa
+                </button>
+            </div>
+        </td>
+    </tr>
+    </tbody>
+</table>
+
+<script th:src="@{/bootstrap/jquery/jquery-3.5.1.min.js}"></script>
+<script th:src="@{/bootstrap/bootstrap413/js/bootstrap.bundle.min.js}"></script>
+</body>
+</html>

@@ -1,5 +1,7 @@
 package com.codegym.furama_spring.model.employee;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+
 import javax.persistence.*;
 import java.util.List;
 
@@ -14,6 +16,7 @@ public class User {
     private String password;
 
     @OneToMany(mappedBy = "user")
+    @JsonBackReference(value = "back_user")
     private List<Employee> employee;
 
     public User() {
