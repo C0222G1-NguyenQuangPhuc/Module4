@@ -3,8 +3,10 @@ package com.codegym.furama_spring.model.contract;
 import com.codegym.furama_spring.model.customer.Customer;
 import com.codegym.furama_spring.model.employee.Employee;
 import com.codegym.furama_spring.model.facility.Facility;
+import com.fasterxml.jackson.annotation.JsonBackReference;
 
 import javax.persistence.*;
+import java.util.List;
 
 @Entity
 public class Contract {
@@ -30,6 +32,10 @@ public class Contract {
     @ManyToOne
     @JoinColumn(name = "facility_id", referencedColumnName = "facility_id")
     private Facility facility;
+
+    @OneToMany(mappedBy = "contract")
+    @JsonBackReference(value = "back_contract")
+    private List<ContractDetail> contractDetailList;
 
     public Contract() {
     }
@@ -98,5 +104,13 @@ public class Contract {
 
     public void setFacility(Facility facility) {
         this.facility = facility;
+    }
+
+    public List<ContractDetail> getContractDetailList() {
+        return contractDetailList;
+    }
+
+    public void setContractDetailList(List<ContractDetail> contractDetailList) {
+        this.contractDetailList = contractDetailList;
     }
 }

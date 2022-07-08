@@ -2,6 +2,8 @@ package com.codegym.furama_spring.controller;
 
 import com.codegym.furama_spring.model.contract.Contract;
 import com.codegym.furama_spring.model.employee.Employee;
+import com.codegym.furama_spring.service.contract.IAttachFacilityService;
+import com.codegym.furama_spring.service.contract.IContractDetailService;
 import com.codegym.furama_spring.service.contract.IContractService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -20,12 +22,19 @@ public class ContractController {
     @Autowired
     private IContractService iContractService;
 
+    @Autowired
+    private IContractDetailService iContractDetailService;
+
+    @Autowired
+    private IAttachFacilityService iAttachFacilityService;
+
     @GetMapping("")
     public ModelAndView showListContract(@RequestParam(name = "page", defaultValue = "0") int page) {
         Sort sort = Sort.by("contract_id").ascending();
         ModelAndView model = new ModelAndView("/contract/list");
         Page<Contract> contractList = iContractService.findAllContract(PageRequest.of(page, 4, sort));
         model.addObject("contractList", contractList);
+        model.addObject("attactFacilityList", iAttachFacilityService.findAll());
         return model;
     }
 }
